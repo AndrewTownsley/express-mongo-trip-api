@@ -1,5 +1,5 @@
 import express from "express";
-
+import Trip from "../models/trips.js";
 const router = express.Router();
 
 // POST { name }
@@ -11,22 +11,37 @@ const router = express.Router();
     //    category( provide list of static categories),
     //     description
     //  }
-    router.post('/trip', (req, res) => {
-        res.send("Post Trip")
+    router.post('/post', async (req, res) => {
+        const trip = new Trip({
+            name: req.body.name,
+        })
+        try {
+            const saveTrip = await trip.save();
+            res.status(200).json(saveTrip);
+        }
+        catch (err) {
+            res.status(500).json({ message: err.message });
+        }
     })
 
 // GET/expenses {trip}
-    router.get('/trip', (req, res) => {
-        res.send('Get Trip')
+    router.get('/', async (req, res) => {
+        try {
+            const trip = await Trip.find();
+            res.json(trip)
+        }
+        catch(err) {
+            res.status(500).json({ message: err.message })
+        }
     })
 
-    router.get('/expense', (req, res) => {
-        res.send('Get Expense')
-    })
+    // router.get('/expense', (req, res) => {
+    //     res.send('Get Expense')
+    // })
 
-    router.post('/expense', (req, res) => {
-        res.send('Post Expense')
-    })
+    // router.post('/expense', (req, res) => {
+    //     res.send('Post Expense')
+    // })
 
 // PUT trips
 

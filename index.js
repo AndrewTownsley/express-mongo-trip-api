@@ -1,6 +1,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import 'dotenv/config';
+import connectDB from "./config/db.js";
 import tripRoutes from './routes/trips.js'
 
 //////////////////////////////////////////////////
@@ -14,8 +15,21 @@ import tripRoutes from './routes/trips.js'
 ////////////////////////////////////////////////////////////
 const app = express();
 
-app.use(express());
-app.use('/', tripRoutes)
 
-app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
+app.use(express.json());
+app.use('/trip', tripRoutes)
+const port = process.env.PORT || 5000;
 
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_URI);
+        app.listen(port, () => {
+            console.log(`Server Listening on port: ${port}`);
+        })
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+start();
