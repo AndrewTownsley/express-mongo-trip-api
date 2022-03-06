@@ -24,16 +24,28 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-// PUT trips
+
 router.delete('/:id', async (req, res) => {
     const { id: tripID } = req.params
-    const trip = await Trip.findOneAndDelete({ _id:tripID})
+    const trip = await Trip.findOneAndDelete({ _id:tripID })
     if(!trip) {
         return res.status(404).json('Trip not found!')
     }
     res.status(200).json({ trip })
 })
 
-// DELETE trips
+router.put('/:id', async (req, res) => {
+    const { id: tripID } = req.params;
+        const trip = await Trip.findOneAndUpdate({
+             _id:tripID },
+             req.body, {
+                 new: true,
+                 runValidators: true,
+             })
+             if(!trip) {
+                 res.status(404).json('Trip not found!')
+             }
+             res.status(200).json({ trip })
+})  
 
 export default router;

@@ -12,8 +12,18 @@ router.post('/', async (req, res) => {
         res.status(200).json({expense})
 })
 
-router.put('/:id', (req, res) => {
-    res.json('Put Expense')
+router.put('/:id', async (req, res) => {
+    const { id: expenseID } = req.params;
+        const expense = await Expense.findOneAndUpdate({ 
+            _id:expenseID},
+            req.body, {
+                new: true,
+                runValidators: true,
+            })
+            if(!expense) {
+                res.status(404).json('Expense not found!')
+            }
+            res.status(200).json({ expense })
 })
 
 router.delete('/:id', async (req, res) => {
