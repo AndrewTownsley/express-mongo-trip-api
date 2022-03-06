@@ -2,7 +2,8 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import 'dotenv/config';
 import connectDB from "./config/db.js";
-import tripRoutes from './routes/trips.js'
+import tripRoutes from './routes/trips.js';
+import expenseRoutes from './routes/expenses.js';
 
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(express.json());
 app.use('/trip', tripRoutes)
+app.use('/expense', expenseRoutes)
 const port = process.env.PORT || 5000;
 
 const start = async () => {

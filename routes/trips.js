@@ -34,15 +34,6 @@ const router = express.Router();
             res.status(500).json({ message: err.message })
         }
     })
-
-    // router.get('/expense', (req, res) => {
-    //     res.send('Get Expense')
-    // })
-
-    // router.post('/expense', (req, res) => {
-    //     res.send('Post Expense')
-    // })
-
 // PUT trips
 
 // DELETE trips
