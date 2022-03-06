@@ -10,21 +10,19 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const expense = await Expense.create(req.body)
         res.status(200).json({expense})
-    // res.json({
-    //     trip: req.body.trip,
-    //     date: req.body.date,
-    //     amount: req.body.date,
-    //     category: req.body.category,
-    //     descritpion: req.body.description,
-    // })
 })
 
 router.put('/:id', (req, res) => {
     res.json('Put Expense')
 })
 
-router.delete('/:id', (req, res) => {
-    res.json('Delete Expense')
+router.delete('/:id', async (req, res) => {
+    const { id: expenseID} = req.params
+    const expense = await Expense.findOneAndDelete({ _id:expenseID })
+    if(!expense) {
+        res.status(404).json('Expense not found!')
+    }
+    res.status(200).json({ expense })
 })
 
 export default router;
